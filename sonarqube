@@ -1,0 +1,13 @@
+# SonarQube Installation As a docker container
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+
+#Pipeline Script
+node{
+    stage("clone"){
+        git branch: 'main', url: 'https://github.com/barathg25/sample-java-spring-app.git'
+    }
+ stage('SonarQube Analysis') {
+            withSonarQubeEnv('sonarqube') { // Use the SonarQube server configured in Jenkins
+              sh "mvn install sonar:sonar"
+            }
+        }
